@@ -107,5 +107,19 @@ Problem
 ] TTC <= 3 & deltavp < deltav & J2 > -maxi | J2 < -Mini & r2 = 0 -> x2 = x1
 
 End.
-
+/* Optional tactic to prove the problem "TTC <= 3 & deltavp < deltav & J2 > -maxi | J2 < -Mini & r2 = 0 ->" */
+/*
+Tactic "Proof"
+implyR'R=="px->[system{|^@|};]leqx,any";
+expand "system";
+loop"leqx,two", 'R=="[{increment{|^@|};ode{|^@|};}*]leqx,any"; <
+  "Init":
+    propClose,
+  "Post":
+    QE,
+  "Step":
+    composeb'R=="[increment{|^@|};ode{|^@|};]x<=2";
+    expandAllDefs;
+    unfold;
+    ODE'R=="[{x'=x^2&x<=2}]x<=2"
 End.
