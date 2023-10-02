@@ -4,7 +4,7 @@ This repository contains research and findings related to the integration of for
 
 # Repository Contents
 **Head-on collision:** Contains code implementation in dL for the head-on collision scenario      
-**rear-end collision:** Contains code implementation in dL for the rear-end collision scenario
+**rear-end collision:** Contains code implementation in dL for the rear-end collision scenario       
 **left-side collision:** Contains code implementation in dL for the left-side collision scenario
 
 # Contributors
