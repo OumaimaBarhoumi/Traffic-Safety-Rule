@@ -1,4 +1,3 @@
-# Traffic-Safety-Rule
 (* ===============================================================*)
 (*                                                                *)
 (*              Formalization of Traffic Safety Rule              *)
