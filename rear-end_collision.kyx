@@ -1,0 +1,117 @@
+﻿ArchiveEntry "rear-end"
+
+Definitions
+  Real t;
+  Real m1;
+  Real m2;
+  Real L1;
+  Real maxi;
+  Real Mini;
+  
+End.
+
+ProgramVariables
+  Real b4;
+  Real b1;
+  Real b2;
+  Real b3;
+  Real b0;
+  Real c;
+  Real r2;
+  Real rd;
+  Real phi2;
+  Real extdeltav;
+  Real extdeltavp;
+  Real extdeltav1;
+  Real extdeltav2;
+  Real vpost;
+  Real TTC;
+  Real v1;
+  Real v2;
+  Real v0;
+  Real x1;
+  Real x2;
+  Real a1;
+  Real a2;
+  Real J1;
+  Real J2;
+End.
+
+Problem
+ TTC <= 3 & extdeltavp < extdeltav & J2 > -maxi | J2 < -Mini & r2 = 0 -> x2 = x1 - L1 & 
+			b4 > 0 & b0 > 0 & b4 > b3 & c > 0 & rd > 0
+	& TTC >= 0 & maxi = 9.9 & Mini = 15 & v1 >= 0 & b1 > 0 & b2 > 0 & b3 > 0 
+	& b3 > b2 & b2 > b1 & b1 > b0 & L1 > 0 & TTC = x2 / v2
+	& v0 >= 0 & v2 >= 0 & v2 > v1 & x2 < x1 & vpost >= 0 & m1 > 0 & m2 > 0
+-> 
+[ 
+    {    
+        {
+            v2 := v0 - a2*TTC ;
+			vpost := m1 * v1 + m2 * v2 / m1 + m2 ;
+			extdeltav2 := vpost - v2 ;
+			extdeltav := extdeltav2;
+			phi2 := x2/ rd;
+			?TTC<=3;
+			?v2 >= 0 & v2 <= 20;
+			a2 := b0; 
+			v2 := v0 - a2*TTC;
+			extdeltav2 := vpost - v2;
+			extdeltavp := max(extdeltav,extdeltav2);
+			?extdeltavp < extdeltav;
+				?J2 < -maxi & J2 > -Mini;     
+					?r2 > 0 & r2 <= 0.785; 
+			++
+				?v2 > 20 & v2 <= 40;
+    			a2 := b1; 
+    			v2 := v0 - a2*TTC;
+    			extdeltav2 := vpost - v2;
+    			extdeltavp := max(extdeltav,extdeltav2);
+    			?extdeltavp < extdeltav;
+				?J2 < -maxi & J2 > -Mini;     
+					?r2 > 0 & r2 <= 0.785; 
+					
+			++
+				?v2 > 40 & v2 <= 60; /** Medium speed */
+        		a2 := b2; 
+        		v2 := v0 - a2*TTC;
+        		extdeltav2 := vpost - v2;
+        		extdeltavp := max(extdeltav,extdeltav2);
+        		?extdeltavp < extdeltav;
+				?J2 < -maxi & J2 > -Mini;     
+					?r2 > 0 & r2 <= 0.785; 
+						
+			++
+				?v2 > 60 & v2 <= 80; /** High speed */
+				a2 := b3; 
+        		v2 := v0 - a2*TTC;
+        		extdeltav2 := vpost - v2;
+        		extdeltavp := max(extdeltav,extdeltav2);
+        		?extdeltavp < extdeltav;
+				?J2 < -maxi & J2 > -Mini;     
+				?r2 > 0 & r2 <= 0.785; 
+						
+			++
+				?v2 > 80 & v2 <= 150;   
+                a2 := b4; 
+        		v2 := v0 - a2*TTC;
+        		extdeltav2 := vpost - v2;
+        		extdeltavp := max(extdeltav,extdeltav2);
+        		?extdeltavp < extdeltav;
+				?J2 < -maxi & J2 > -Mini;     
+				?r2 > 0 & r2 <= 0.785; 
+						
+		}
+		{x2' = v2, v2' = a2, a2' = J2, phi2' = r2} 
+     
+    }*
+] TTC <= 3 & extdeltavp < extdeltav & J2 > -maxi | J2 < -Mini & r2 = 0 -> x2 = x1 - L1
+
+End.
+
+/* Tactic "rear1: Proof" */
+/*auto*/
+/*End.*/
+
+
+End.

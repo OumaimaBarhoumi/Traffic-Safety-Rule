@@ -1,0 +1,159 @@
+﻿ArchiveEntry "left-side"
+
+Definitions
+  Real m1;
+  Real m2;
+  Real Maxi;
+  Real Mini;
+  Real d1;
+  Real d2;
+  Real sqrt(Real);
+  
+End.
+
+
+ProgramVariables
+  Real alpha;
+  Real tfront2;
+  Real tfront1;
+  Real trear1;
+  Real trear2;
+  Real A;
+  Real b4;
+  Real b1;
+  Real b2;
+  Real b3;
+  Real b0;
+  Real c;
+  Real r2;
+  Real r1;
+  Real rd;
+  Real phi2;
+  Real phi1;
+  Real extdeltav;
+  Real extdeltavp;
+  Real extdeltav1;
+  Real extdeltav2;
+  Real vpost;
+  Real TTC;
+  Real v1;
+  Real v2;
+  Real v0;
+  Real x1;
+  Real x2;
+  Real a1;
+  Real a2;
+  Real J1;
+  Real J2;
+  Real L;
+End.
+
+Problem
+    TTC <= 3 & extdeltavp < extdeltav & J2 > -Maxi | J2 < -Mini & J1 > -Maxi | J1 < -Mini & r1 = 0 & r2 = 0 -> x2 = x1 & x2 < x1 & b4 > 0 & b0 > 0 & b4 > b3 & c > 0
+	& TTC >= 0 & Maxi = 9.9 & Mini = 15 & v1 >= 0 & b1 > 0 & b2 > 0 & b3 > 0 
+	& b3 > b2 & b2 > b1 & b1 > b0 & A>0 & d1 > 0 & d2 > 0 
+	& tfront1 > 0 & tfront2 > 0 & trear1 > 0 & trear2 > 0 & trear2 > tfront2 
+	& trear1 > tfront1 & !x2 = x1 & TTC = d2/v2
+	& v0 >= 0 & v2 >= 0 & v2 > v1  & vpost >= 0 & m1 > 0 & m2 > 0 & L > 0
+-> 
+[ 
+    {    
+           {    tfront1 := x1 / v1 ;
+                tfront2 := x2 / v2 ;
+                trear1 := x1 + L / v1 ;
+                trear2 := x2 + L / v2 ;
+                ?tfront2 > tfront1 & tfront2 < trear1 ;
+                TTC := d2 / v0 - a2 * TTC;
+            ++ ?tfront1 > tfront2 & tfront1 < trear2 ;
+                TTC := d1 / v0 - a1 * TTC ;
+                v1 := v0 - a1 * TTC ;
+                v2 := v0 - a2 * TTC ;
+                extdeltav2 := m1 / m1 + m2 * sqrt(v1^2 + v2 ^ 2 - 2 * v1 * v2 * c) ;
+                extdeltav1 := m2 / m1 + m2 * sqrt(v1^2 + v2 ^ 2 - 2 * v1 * v2 * c) ;
+                phi1 := x1 / rd ;
+                phi2 := x2 / rd ;
+            
+                ?TTC <= 3;
+                ?v1 >= 0 & v1 <= 20 & v2 >= 0 & v2 <= 20 ;
+                a2 := b0 ;
+                a1 := b0 ;
+                extdeltavp := max(extdeltav1, extdeltav2) ;
+                ?extdeltavp < extdeltav;
+				?J2 <= -Maxi & J2 > -Mini & J1 <= -Maxi & J1 > -Mini;
+				?r1 > 0 & r1 <= 0.785 | r2 > 0 & r2 <= 0.785;
+			
+			++  ?v1 > 20 & v1 <= 40 & v2 >= 0 & v2 <= 20 ;
+                a2 := b0 ;
+                a1 := b1 ;	
+                extdeltavp := max(extdeltav1, extdeltav2) ;
+                ?extdeltavp < extdeltav;
+				?J2 <= -Maxi & J2 > -Mini & J1 <= -Maxi & J1 > -Mini;
+				?r1 > 0 & r1 <= 0.785 | r2 > 0 & r2 <= 0.785;
+           
+            ++  ?v1 > 40 & v1 <= 60 & v2 >= 0 & v2 <= 20 ;
+                a2 := b0 ;
+                a1 := b2 ;
+                extdeltavp := max(extdeltav1, extdeltav2) ;
+                ?extdeltavp < extdeltav;
+				?J2 <= -Maxi & J2 > -Mini & J1 <= -Maxi & J1 > -Mini;
+				?r1 > 0 & r1 <= 0.785 | r2 > 0 & r2 <= 0.785;
+				
+			++ ?v1 > 60 & v1 <= 80 & v2 >= 0 & v2 <= 20 ;
+                a2 := b0 ;
+                a1 := b3 ;
+                extdeltavp := max(extdeltav1, extdeltav2) ;
+                ?extdeltavp < extdeltav;
+				?J2 <= -Maxi & J2 > -Mini & J1 <= -Maxi & J1 > -Mini;
+				?r1 > 0 & r1 <= 0.785 | r2 > 0 & r2 <= 0.785;
+				
+			++ ?v1 > 80 & v1 <= 150 & v2 >= 0 & v2 <= 20 ;
+                a2 := b0 ;
+                a1 := b4 ;
+                extdeltavp := max(extdeltav1, extdeltav2) ;
+                ?extdeltavp < extdeltav;
+				?J2 <= -Maxi & J2 > -Mini & J1 <= -Maxi & J1 > -Mini;
+				?r1 > 0 & r1 <= 0.785 | r2 > 0 & r2 <= 0.785;
+				
+			++ ?v1 > 20 & v1 <= 40 & v2 >= 20 & v2 <= 40 ;
+                a2 := b1 ;
+                a1 := b1 ;
+                extdeltavp := max(extdeltav1, extdeltav2) ;
+                ?extdeltavp < extdeltav;
+				?J2 <= -Maxi & J2 > -Mini & J1 <= -Maxi & J1 > -Mini;
+				?r1 > 0 & r1 <= 0.785 | r2 > 0 & r2 <= 0.785;
+				
+			++ ?v1 > 40 & v1 <= 60 & v2 >= 20 & v2 <= 40 ;
+                a2 := b1 ;
+                a1 := b2 ;
+                extdeltavp := max(extdeltav1, extdeltav2) ;
+                ?extdeltavp < extdeltav;
+				?J2 <= -Maxi & J2 > -Mini & J1 <= -Maxi & J1 > -Mini;
+				?r1 > 0 & r1 <= 0.785 | r2 > 0 & r2 <= 0.785;
+				
+			++ ?v1 > 60 & v1 <= 80 & v2 >= 20 & v2 <= 40 ;
+                a2 := b1 ;
+                a1 := b3 ;
+                extdeltavp := max(extdeltav1, extdeltav2) ;
+                ?extdeltavp < extdeltav;
+				?J2 <= -Maxi & J2 > -Mini & J1 <= -Maxi & J1 > -Mini;
+				?r1 > 0 & r1 <= 0.785 | r2 > 0 & r2 <= 0.785;
+				
+			++ ?v1 > 80 & v1 <= 150 & v2 >= 20 & v2 <= 40 ;
+                a2 := b1 ;
+                a1 := b4 ;
+                extdeltavp := max(extdeltav1, extdeltav2) ;
+                ?extdeltavp < extdeltav;
+				?J2 <= -Maxi & J2 > -Mini & J1 <= -Maxi & J1 > -Mini;
+				?r1 > 0 & r1 <= 0.785 | r2 > 0 & r2 <= 0.785;
+       }
+		{x1' = v1, v1' = a1, a1' = J1, x2' = v2, v2' = a2, a2' = J2, phi1' = r1, phi2' = r2} 
+    }*
+] TTC <= 3 & extdeltavp < extdeltav & J2 > -Maxi | J2 < -Mini & J1 > -Maxi | J1 < -Mini & r1 = 0 & r2 = 0 -> x2 = x1
+
+End.
+
+/*Tactic "left-side: Proof"*/
+/*auto*/
+/*End.*/
+
+End.
