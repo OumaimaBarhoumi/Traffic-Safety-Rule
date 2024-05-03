@@ -35,13 +35,14 @@ ProgramVariables
   Real a2;
   Real J1;
   Real J2;
+  Real L1;
 End.
 
 Problem
  TTC <= 3 & extdeltavp < extdeltav & J2 > -maxi | J2 < -Mini & r2 = 0 -> x2 = x1 - L1 & 
 			b4 > 0 & b0 > 0 & b4 > b3 & c > 0 & rd > 0
 	& TTC >= 0 & maxi = 9.9 & Mini = 15 & v1 >= 0 & b1 > 0 & b2 > 0 & b3 > 0 
-	& b3 > b2 & b2 > b1 & b1 > b0 & L1 > 0 & TTC = x2 / v2
+	& b3 > b2 & b2 > b1 & b1 > b0 & L1 > 0 & L1 > 0 & TTC = x1 - x2 - L1 / v2 - v1
 	& v0 >= 0 & v2 >= 0 & v2 > v1 & x2 < x1 & vpost >= 0 & m1 > 0 & m2 > 0
 -> 
 [ 
